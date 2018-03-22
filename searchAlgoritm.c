@@ -1,22 +1,29 @@
 #include<stdlib.h> // necessário para funções rand e srand
+
 #include<stdio.h>
+
 #include <time.h> // Usar função time para que esses valores não se repitam já que são chaves de registros
 
-#define SIZE 100
-#define TAMINDICE 30
+#define TAMREGISTROS 50
+#define TAMINDICE 10
 
 void preencheRegistros(int *registros){
-  int i;
-  for (i = 0; i < SIZE; i++)
-  {
-    registros[i] = rand() % 100;
-  }
+  int i, j, status;
+  for (i = 0; i < TAMREGISTROS; ++i) {
+        //Compara o valor inserido con os outros para evitar repeticoes
+       do {
+          registros[i] = rand() % (TAMREGISTROS+300);
+          status = 1;
+          for (j = 0; (j < i) && (status == 1); ++j)
+             if (registros[i] == registros[j])
+                status = 0;
+       } while (status == 0);
+    }
 }
 
 void imprimeRegistros(int *registros){
   int i;
-  for (i = 0; i < SIZE; i++)
-  {
+  for (i = 0; i < TAMREGISTROS; i++){
     printf("%d - ",registros[i]);
   }
 }
@@ -25,6 +32,11 @@ void constroIndices(int *registros, int *kindex, int tamKindex){
   int i;
   for(i=1; i <  tamKindex; i++){
     kindex[i] = registros[TAMINDICE * i];
+  }
+  printf("\n\n=====================================================\n");
+  printf("\nTabela de kindex\n");
+  for (i = 0; i < tamKindex; i++){
+    printf("%d - ",kindex[i]);
   }
 }
 
@@ -41,8 +53,8 @@ void ordenaRegistros(int *registros){
 
 int main(){
 
-    int registros[SIZE], tamKindex;
-    tamKindex = SIZE/TAMINDICE;
+    int registros[TAMREGISTROS], tamKindex;
+    tamKindex = TAMREGISTROS/TAMINDICE;
     int kindex [tamKindex], chave,posicao;
 
    //Preenchendo o vetor de registros com números aleatórios
