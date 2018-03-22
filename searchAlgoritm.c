@@ -28,6 +28,19 @@ void imprimeRegistros(int *registros){
   }
 }
 
+void ordenaRegistros(int *registros){
+  int i, j, aux;
+  for (i = 1; i < TAMREGISTROS; i++) {
+    for (j = 0; j < TAMREGISTROS - 1; j++) {
+      if (registros[j] > registros[j + 1]) {
+        aux = registros[j];
+        registros[j] = registros[j + 1];
+        registros[j + 1] = aux;
+      }
+    }
+  }
+}
+
 void constroIndices(int *registros, int *kindex, int tamKindex){
   int i;
   for(i=1; i <  tamKindex; i++){
@@ -45,10 +58,6 @@ int pesquisar(int chave, int *kindex, int *registros, int tamKindex){
   printf("\n========== > Ainda não implementado <===============\n");
   // Procurando na tabela de índices
  return -1;
-}
-
-void ordenaRegistros(int *registros){
-  printf("\n========== > Ainda não está ordenando registros <===============\n\n");
 }
 
 int main(){
