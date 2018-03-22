@@ -32,10 +32,23 @@ int pesquisaIndex(int chave, int *kindex, int tamKindex){
 
 int pesquisaRegistro(int *registros, int chave, int *kindex, int tamKindex){
   int i;
-  printf("\n========== > Ainda não implementado <===============\n");
-  // Procurando na tabela de índices
- return -1;
+  int posicaoKindex = pesquisaIndex(chave, kindex, tamKindex);
+  if (posicaoKindex != -1){
+    for (i = ((posicaoKindex-1) * TAMINDICE); i < (posicaoKindex * TAMINDICE); i++) {
+      if (comparaChaveValor(registros[i], chave) == 0){
+        return i;
+      }
+    }
+  } else{
+      for (i = (tamKindex - 1)*TAMINDICE; i < TAMREGISTROS; i++) {
+        if (comparaChaveValor(registros[i], chave) == 0){
+          return i;
+      }
+    }
+  }
+  return -1;
 }
+
 
 void preencheRegistros(int *registros){
   int i, j, status;
@@ -58,6 +71,17 @@ void imprimeRegistros(int *registros){
   }
 }
 
+void constroIndices(int *registros, int *kindex, int tamKindex){
+  int i;
+  for(i=1; i < tamKindex; i++){
+    kindex[i] = registros[TAMINDICE * i];
+  }
+  printf("\n=====================================================\n");
+  for (i = 0; i < tamKindex; i++){
+    printf("%d - ",kindex[i]);
+  }
+}
+
 void ordenaRegistros(int *registros){
   int i, j, aux;
   for (i = 1; i < TAMREGISTROS; i++) {
@@ -71,47 +95,50 @@ void ordenaRegistros(int *registros){
   }
 }
 
-void constroIndices(int *registros, int *kindex, int tamKindex){
-  int i;
-  for(i=1; i <  tamKindex; i++){
-    kindex[i] = registros[TAMINDICE * i];
-  }
-  printf("\n\n=====================================================\n");
-  printf("\nTabela de kindex\n");
-  for (i = 0; i < tamKindex; i++){
-    printf("%d - ",kindex[i]);
-  }
-}
 
 int main(){
 
-    int registros[TAMREGISTROS], tamKindex;
-    tamKindex = TAMREGISTROS/TAMINDICE;
-    int kindex [tamKindex], chave,posicao;
+  int registros[TAMREGISTROS], tamKindex;
 
-   //Preenchendo o vetor de registros com números aleatórios
-   preencheRegistros(registros);
+  if(TAMREGISTROS%TAMINDICE > 0){
+      tamKindex = (TAMREGISTROS/TAMINDICE) + 1;
+  }else{
+      tamKindex = TAMREGISTROS/TAMINDICE;
+  }
 
-   //Ordenar registros
-   ordenaRegistros(registros);
+  srand(time(NULL));
 
-   // Só pra testar a impressão
-    imprimeRegistros(registros);
+  int kindex [tamKindex], chave,posicao;
+  //Preenchendo o vetor de registros com números aleatórios
 
-    //Constroi tabela de indices
-    kindex[0] = registros[0];
+  preencheRegistros(registros);
 
-    constroIndices(registros, kindex, tamKindex);
+  //Ordenar registros
 
-    printf("\n\nDigite a chave das informações que deseja procurar: ");
-    scanf("%d", &chave);
+  ordenaRegistros(registros);
 
-    posicao = pesquisaRegistro(registros, chave, kindex, tamKindex);
+  // Só pra testar a impressão
 
-    if (posicao!= -1)
-      printf("\n\nA informação procurada encontra-se na posicao : %d\n", posicao);
-    else
-      printf("\n\nNão encontrado\n");
+  imprimeRegistros(registros);
 
-return 0;
+  //Constroi tabela de indices
+
+  kindex[0] = registros[0];
+
+  constroIndices(registros, kindex, tamKindex);
+
+  printf("\n\nDigite a chave das informações que deseja procurar: ");
+
+  scanf("%d", &chave);
+
+  posicao = pesquisaRegistro(registros, chave, kindex, tamKindex);
+
+  if (posicao!= -1){
+      printf("\n\nA chave informacao pesquisada esta na %dª posicao do vetor\n", posicao+1);
+  }else {
+      printf("A chave da informacao pesquisada nao se encontra no vetor de registros\n");
+  }
+
+  return 0;
+
 }
