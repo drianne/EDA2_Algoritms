@@ -7,6 +7,36 @@
 #define TAMREGISTROS 50
 #define TAMINDICE 10
 
+int comparaChaveValor(int a, int b){
+  if (a > b){
+    return 1;
+  }
+  if (a == b){
+    return 0;
+  }
+  return -1;
+}
+
+int pesquisaIndex(int chave, int *kindex, int tamKindex){
+  int i;
+  for (i = 0;i < tamKindex ;i++) {
+    if (comparaChaveValor(kindex[i], chave) == 1){
+      return i;
+    }
+    if (comparaChaveValor(kindex[i], chave) == 0){
+      return i *TAMINDICE;
+    }
+  }
+  return -1;
+}
+
+int pesquisaRegistro(int *registros, int chave, int *kindex, int tamKindex){
+  int i;
+  printf("\n========== > Ainda não implementado <===============\n");
+  // Procurando na tabela de índices
+ return -1;
+}
+
 void preencheRegistros(int *registros){
   int i, j, status;
   for (i = 0; i < TAMREGISTROS; ++i) {
@@ -53,13 +83,6 @@ void constroIndices(int *registros, int *kindex, int tamKindex){
   }
 }
 
-int pesquisar(int chave, int *kindex, int *registros, int tamKindex){
-  int i;
-  printf("\n========== > Ainda não implementado <===============\n");
-  // Procurando na tabela de índices
- return -1;
-}
-
 int main(){
 
     int registros[TAMREGISTROS], tamKindex;
@@ -83,7 +106,7 @@ int main(){
     printf("\n\nDigite a chave das informações que deseja procurar: ");
     scanf("%d", &chave);
 
-    posicao = pesquisar(chave, kindex, registros, tamKindex);
+    posicao = pesquisaRegistro(registros, chave, kindex, tamKindex);
 
     if (posicao!= -1)
       printf("\n\nA informação procurada encontra-se na posicao : %d\n", posicao);
