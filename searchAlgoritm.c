@@ -22,6 +22,10 @@ void imprimeRegistros(int *registros){
 }
 
 void constroIndices(int *registros, int *kindex, int tamKindex){
+  int i;
+  for(i=1; i <  tamKindex; i++){
+    kindex[i] = registros[TAMINDICE * i];
+  }
 }
 
 int pesquisar(int chave, int *kindex, int *registros, int tamKindex){
